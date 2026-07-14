@@ -1,34 +1,112 @@
-# React + TypeScript + Vite
+# SST Raster Globe
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interactive web map for exploring daily sea surface temperature (SST) data with local raster and vector contour tiles.
 
-Currently, two official plugins are available:
+## What This Project Is
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This app renders a MapLibre globe/map and overlays SST datasets by day.
 
-## React Compiler
+- Raster SST layer from PNG tiles
+- Contour SST layer from gzipped PBF vector tiles
+- Date selector for June 2026 snapshots
+- Layer toggle controls in a sidebar
+- Shareable map position through URL hash (zoom/lng/lat)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Core files:
 
-Note: This will impact Vite dev & build performances.
+- `src/App.tsx` initializes the map, tile sources, and layer visibility
+- `src/constants.ts` defines map layers and date options
+- `src/components/Sidebar.tsx` provides date and layer controls
+- `vite.config.ts` ensures local PBF responses have proper headers
+- `vercel.json` sets production headers and SPA rewrites
 
-## Expanding the Oxlint configuration
+## Stack
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+- React 19
+- TypeScript
+- Vite
+- MapLibre GL
+- Oxlint
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## Prerequisites
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+- Node.js 20+
+- npm 10+
+
+## How To Run
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Start development server:
+
+   ```bash
+   npm run dev
+   ```
+
+3. Open the URL printed in terminal (usually `http://localhost:5173`).
+
+## Scripts
+
+- `npm run dev` - start Vite dev server
+- `npm run build` - type-check and build production assets
+- `npm run preview` - preview production build locally
+- `npm run lint` - run Oxlint
+- `npm run build:ci` - run `deploy.sh` (fetch/extract LFS asset archive, then build)
+
+## Data Layout
+
+The app expects static assets under `public`.
+
+- `public/raster/YYYYMMDD/{z}/{x}/{y}.png`
+- `public/contours/YYYYMMDD/{z}/{x}/{y}.pbf`
+- `public/style.json` (MapLibre style)
+- `public/tiles` and `public/font` (base map assets)
+
+Date folders should match the selected values (for example `20260601` through `20260630`).
+
+## Tile Headers (Important)
+
+Contour PBF files are pre-compressed and must be served with:
+
+- `Content-Type: application/x-protobuf`
+- `Content-Encoding: gzip`
+
+This is handled:
+
+- In development by middleware in `vite.config.ts`
+- In production by header rules in `vercel.json`
+
+## URL Hash Behavior
+
+The app keeps map view in URL hash format:
+
+`#zoom/lng/lat`
+
+On reload, the map restores to that position.
+
+## Deployment Notes
+
+- Designed for static hosting (for example Vercel)
+- `vercel.json` includes a catch-all rewrite to `index.html`
+- Ensure all required tile directories are included in deployment output
+
+## Trade-offs
+
+- Statically hosted all the vector and raster tiles to simplify deployment. No external tile server, for vercel (where this is deployed) caching is also automatically done.
+
+- The tiles are fetched during deployment using git lfs, see `deploy.sh`
+- The files need to be repacked (as tarball) for every update to the tiles and refetched during deployment, this is where a separate server would have been more efficient.
+
+## Troubleshooting
+
+- Map appears but SST overlays are missing:
+  - verify date folders exist in both `public/raster` and `public/contours`
+  - check network requests for missing tiles (404)
+- Contours do not draw:
+  - confirm response headers include gzip encoding for `.pbf`
+- Build issues in CI:
+  - review `deploy.sh` behavior around Git LFS and remote configuration
