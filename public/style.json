@@ -7,7 +7,7 @@
         17.65431710431244,
         32.954120326746775
     ],
-    "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+    "glyphs": "https://sst-raster-globe.vercel.app/font/{fontstack}/{range}.pbf",
     "layers": [
         {
             "id": "background",
@@ -529,7 +529,7 @@
     "bearing": 0,
     "sources": {
         "maplibre": {
-            "url": "https://demotiles.maplibre.org/tiles/tiles.json",
+            "url": "https://sst-raster-globe.vercel.app/tiles.json",
             "type": "vector"
         }
     },
