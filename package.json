@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:ci": "bash deploy.sh",
     "lint": "oxlint",
     "preview": "vite preview"
   },
