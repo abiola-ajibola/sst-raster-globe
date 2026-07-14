@@ -1,0 +1,18 @@
+{
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "headers": [
+        {
+            "source": "/contours/:date/:z/:x/:y.pbf",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/x-protobuf"
+                },
+                {
+                    "key": "Content-Encoding",
+                    "value": "gzip"
+                }
+            ]
+        }
+    ]
+}
