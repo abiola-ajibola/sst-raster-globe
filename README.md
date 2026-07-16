@@ -68,6 +68,8 @@ The app expects static assets under `public`.
 
 Date folders should match the selected values (for example `20260601` through `20260630`).
 
+The sst data was taken from NOAA website in netcdf format at https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/202606/
+
 ## Tile Headers (Important)
 
 Contour PBF files are pre-compressed and must be served with:
