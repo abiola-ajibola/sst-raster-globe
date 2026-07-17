@@ -20,7 +20,7 @@ export function Sidebar({
   return (
     <div className="sidebar">
       <div className="sidebar-content">
-        <select value={value} onChange={onOptionsChange} name="city" id="city">
+        <select className="date-selector" value={value} onChange={onOptionsChange} name="city" id="city">
           {options.map(({ label, value }) => (
             <option key={label} value={value}>
               {label}

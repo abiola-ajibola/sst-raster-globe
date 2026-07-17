@@ -34,7 +34,7 @@ body {
   width: 100%;
   box-sizing: border-box;
   border: 1px solid var(--sidebar-border);
-  background: var(--control-bg);
+  background: var(--sidebar-bg);
   color: var(--sidebar-text);
   border-radius: 8px;
   padding: 8px 10px;
