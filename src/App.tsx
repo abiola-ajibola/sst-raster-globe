@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Map, type AddLayerObject } from "maplibre-gl";
 
 import { Sidebar } from "./components/Sidebar";
+import { Legend } from "./components/Legend";
 import { dateOptions, mapLayers } from "./constants";
 
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -129,6 +130,7 @@ function App() {
       />
       <div className="map_wrapper">
         <div id="map" ref={mapContainerRef}></div>
+        <Legend />
       </div>
     </div>
   );
